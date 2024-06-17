@@ -19,13 +19,10 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Restore dependencies
-      run: dotnet restore
-      working-directory: api-web-services-dose-certa/api-web-services-dose-certa
+      run: dotnet restore api-web-services-dose-certa/api-web-services-dose-certa
 
     - name: Build
-      run: dotnet build --no-restore --configuration Release
-      working-directory: api-web-services-dose-certa/api-web-services-dose-certa
+      run: dotnet build --no-restore --configuration Release api-web-services-dose-certa/api-web-services-dose-certa
 
     - name: Run
-      run: dotnet run --no-build --configuration Release
-      working-directory: api-web-services-dose-certa/api-web-services-dose-certa
+      run: dotnet run --no-build --configuration Release --project api-web-services-dose-certa/api-web-services-dose-certa/api-web-services-dose-certa.csproj
