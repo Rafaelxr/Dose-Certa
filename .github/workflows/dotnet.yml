@@ -1,4 +1,4 @@
-name: .NET
+name: Build and Deploy
 
 on:
   push:
@@ -8,15 +8,10 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
-
-    # Define o diretório do projeto
-    - name: Set Project Directory
-      run: cd api-web-services-dose-certa/api-web-services-dose-certa
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -25,9 +20,12 @@ jobs:
 
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: api-web-services-dose-certa/api-web-services-dose-certa
 
     - name: Build
-      run: dotnet build --no-restore
-      
-    -name: Run
-      run: dotnet run
+      run: dotnet build --no-restore --configuration Release
+      working-directory: api-web-services-dose-certa/api-web-services-dose-certa
+
+    - name: Run
+      run: dotnet run --no-build --configuration Release
+      working-directory: api-web-services-dose-certa/api-web-services-dose-certa
