@@ -28,4 +28,4 @@ jobs:
 
     - name: Run
       run: dotnet run --no-build --configuration Release
-      working-directory: api-web-services-dose-certa/api-web-services-dose-certa/api-web-services-dose-certa.csproj
+      working-directory: api-web-services-dose-certa/api-web-services-dose-certa
