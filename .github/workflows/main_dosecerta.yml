@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - DoseCerta
+name: Build and deploy ASP.Net Core app to Azure Web App - dosecerta
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -19,11 +19,8 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '8.x'
+          dotnet-version: '6.0.x'
           include-prerelease: true
-
-      - name: Change to API directory
-        run: cd api-web-services-dose-certa\api-web-services-dose-certa
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
@@ -38,32 +35,23 @@ jobs:
           path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: build
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write #This is required for requesting the JWT
-
+    
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
           name: .net-app
       
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_DA19E2C7E8C340279AA03BFD75FB8B09 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_7C1DD881CEF64257B2DC460F1F5E6CCE }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_5A78B40C9ABC476296007AD3EEB92EEE }}
-
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'DoseCerta'
+          app-name: 'dosecerta'
           slot-name: 'Production'
-          package: api-web-services-dose-certa\api-web-services-dose-certa
-          
+          package: .
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_03818BD1ED0F4FB1965F5662926C3FCD }}
